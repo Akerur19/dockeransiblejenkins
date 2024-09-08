@@ -1,6 +1,8 @@
 ---
 - hosts: dev
   become: True
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Install python pip
       apt:
@@ -10,9 +12,11 @@
       setup:
         filter: ansible_pkg_mgr
     - name: Install docker
-      yum:
-        name: docker
+      apt:
+        name: docker.io
         state: present
+      environment:
+        DEBIAN_FRONTEND: noninteractive
     - name: start docker
       service:
         name: docker
